@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="3">
+
+    <Properties>
+        <Property name="filename">logs/log.log</Property>
+        <Property name="basePatternLayout">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${basePatternLayout}"/>
+        </Console>
+        <File name="FILE" filename="${filename}">
+            <PatternLayout pattern="${basePatternLayout}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="by.etc.karamach" level="warn">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+
+
+</Configuration>
