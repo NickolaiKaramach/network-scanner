@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HostNameLocalFinder implements HostNameFinder {
 
-    private static final int timeout = 10000;
+    private static final int timeout = 1000;
 
     private static final Logger logger = LogManager.getLogger();
     private static final String DOT_SPLITTER = ".";
@@ -26,7 +26,7 @@ public class HostNameLocalFinder implements HostNameFinder {
 
         List<String> hostNameList = new ArrayList<String>();
 
-        for (int i = 1; i < MAX_IP_RANGE; i++) {
+        for (int i = 1; i < 25; i++) {
 
             String host = subnetMask + DOT_SPLITTER + i;
 
@@ -36,10 +36,13 @@ public class HostNameLocalFinder implements HostNameFinder {
 
                 logger.info(host + IS_REACHABLE_HOST);
 
-                logger.info(currentInetAddress.getHostName());
+                String hostName = currentInetAddress.getHostName();
 
 
-                hostNameList.add(host);
+                logger.info(hostName);
+
+
+                hostNameList.add(hostName);
             }
 
         }

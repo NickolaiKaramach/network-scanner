@@ -1,45 +1,29 @@
 package by.bsuir.karamach;
 
 import by.bsuir.karamach.finder.HostNameLocalFinder;
+import by.bsuir.karamach.process.ProcessRunner;
 
 import java.util.List;
 
 public class Runner {
 
-    private static final String ARP_CONSOLE_COMMAND = "arp ";
+    private static final String ARP_CONSOLE_COMMAND = "arp -a ";
 
     public static void main(String[] args) throws Exception {
 
-        String subnet = "192.168.100";
+        String subnet = "100.6.102";
 
         HostNameLocalFinder hostFinder = new HostNameLocalFinder();
         List<String> hostNames = hostFinder.getAllHostNames(subnet);
 
-
         System.out.println(hostNames);
-//        Process p = null;
-//        try {
-//            p = Runtime.getRuntime().exec(ARP_CONSOLE_COMMAND + hostName);
-//        } catch (java.io.IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        BufferedReader in =
-//                new BufferedReader(
-//                        new InputStreamReader(p.getInputStream())
-//                );
-//
-//        String output = "";
-//        String currentLine = null;
-//
-//        try {
-//            while ((currentLine = in.readLine()) != null)
-//                output += currentLine + "\n";
-//        } catch (java.io.IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(output);
+
+
+        for (String currentName : hostNames) {
+            System.out.println("******************************************************************************");
+            System.out.println(ProcessRunner.executeCommand(ARP_CONSOLE_COMMAND + currentName));
+            System.out.println("******************************************************************************");
+        }
     }
 
 
