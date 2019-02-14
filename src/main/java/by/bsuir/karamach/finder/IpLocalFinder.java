@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostNameLocalFinder implements HostNameFinder {
+public class IpLocalFinder implements IpFinder {
 
     private static final int timeout = 1000;
 
@@ -22,11 +22,11 @@ public class HostNameLocalFinder implements HostNameFinder {
      * @return List of all ip-addresses in local network
      */
     @Override
-    public List<String> getAllHostNames(String subnetMask) throws IOException {
+    public List<String> getAllIps(String subnetMask) throws IOException {
 
         List<String> hostNameList = new ArrayList<String>();
 
-        for (int i = 1; i < 25; i++) {
+        for (int i = 1; i < MAX_IP_RANGE; i++) {
 
             String host = subnetMask + DOT_SPLITTER + i;
 

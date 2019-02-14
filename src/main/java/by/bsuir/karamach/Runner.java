@@ -1,20 +1,20 @@
 package by.bsuir.karamach;
 
-import by.bsuir.karamach.finder.HostNameLocalFinder;
+import by.bsuir.karamach.finder.IpLocalFinder;
 import by.bsuir.karamach.process.ProcessRunner;
 
 import java.util.List;
 
 public class Runner {
 
-    private static final String ARP_CONSOLE_COMMAND = "arp -a ";
+    private static final String ARP_CONSOLE_COMMAND = "arp ";
 
     public static void main(String[] args) throws Exception {
 
-        String subnet = "100.6.102";
+        String subnet = "192.168.33";
 
-        HostNameLocalFinder hostFinder = new HostNameLocalFinder();
-        List<String> hostNames = hostFinder.getAllHostNames(subnet);
+        IpLocalFinder hostFinder = new IpLocalFinder();
+        List<String> hostNames = hostFinder.getAllIps(subnet);
 
         System.out.println(hostNames);
 
