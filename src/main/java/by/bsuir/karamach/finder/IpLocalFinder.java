@@ -1,52 +1,64 @@
 package by.bsuir.karamach.finder;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import by.bsuir.karamach.HostChecker;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IpLocalFinder implements IpFinder {
-
-    private static final int timeout = 1000;
-
-    private static final Logger logger = LogManager.getLogger();
+    public static final int TIMEOUT = 1000;
     private static final String DOT_SPLITTER = ".";
-    private static final String IS_REACHABLE_HOST = " is reachable";
     private static final int MAX_IP_RANGE = 255;
+    private static IpLocalFinder instance = new IpLocalFinder();
+    private volatile List<String> hostNameList;
+
+    private IpLocalFinder() {
+    }
+
+    public static IpLocalFinder getInstance() {
+        return instance;
+    }
 
     /**
      * @param subnetMask 3 byte mask
      * @return List of all ip-addresses in local network
      */
     @Override
-    public List<String> getAllIps(String subnetMask) throws IOException {
+    public List<String> getAllIps(String subnetMask) {
 
-        List<String> hostNameList = new ArrayList<String>();
+        hostNameList = new ArrayList<String>();
 
         for (int i = 1; i < MAX_IP_RANGE; i++) {
 
             String host = subnetMask + DOT_SPLITTER + i;
 
-            InetAddress currentInetAddress = InetAddress.getByName(host);
+            HostChecker hostChecker = new HostChecker(host);
 
-            if (currentInetAddress.isReachable(timeout)) {
+            Thread thread = new Thread(hostChecker);
 
-                logger.info(host + IS_REACHABLE_HOST);
+            thread.run();
 
-                String hostName = currentInetAddress.getHostName();
-
-
-                logger.info(hostName);
-
-
-                hostNameList.add(hostName);
-            }
+//            InetAddress currentInetAddress = InetAddress.getByName(host);
+//
+//            if (currentInetAddress.isReachable(TIMEOUT)) {
+//
+//                logger.info(host + IS_REACHABLE_HOST);
+//
+//                String hostName = currentInetAddress.getHostName();
+//
+//
+//                logger.info(hostName);
+//
+//
+//                hostNameList.add(hostName);
+//            }
 
         }
 
         return hostNameList;
+    }
+
+    public synchronized void addHostNameToList(String hostName) {
+        hostNameList.add(hostName);
     }
 }

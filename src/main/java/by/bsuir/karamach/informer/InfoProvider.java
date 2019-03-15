@@ -24,8 +24,7 @@ public final class InfoProvider {
     public static StringBuilder getLocalDeviceInfo(String subnet) throws IOException {
         StringBuilder result = new StringBuilder();
 
-        IpLocalFinder hostFinder = new IpLocalFinder();
-        List<String> hostNames = hostFinder.getAllIps(subnet);
+        List<String> hostNames = IpLocalFinder.getInstance().getAllIps(subnet);
 
         StringBuilder otherDevicesInfo = getNetworkInfo(hostNames);
         result.append(otherDevicesInfo);
