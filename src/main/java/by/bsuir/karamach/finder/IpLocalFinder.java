@@ -1,12 +1,17 @@
 package by.bsuir.karamach.finder;
 
 import by.bsuir.karamach.HostChecker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class IpLocalFinder implements IpFinder {
-    public static final int TIMEOUT = 1000;
+
+    private static final Logger logger = LogManager.getLogger();
+
     private static final String DOT_SPLITTER = ".";
     private static final int MAX_IP_RANGE = 255;
     private static IpLocalFinder instance = new IpLocalFinder();
@@ -26,32 +31,29 @@ public class IpLocalFinder implements IpFinder {
     @Override
     public List<String> getAllIps(String subnetMask) {
 
-        hostNameList = new ArrayList<String>();
+        CountDownLatch countDownLatch = new CountDownLatch(MAX_IP_RANGE);
 
-        for (int i = 1; i < MAX_IP_RANGE; i++) {
+        hostNameList = new ArrayList<>();
+
+        for (int i = 1; i <= MAX_IP_RANGE; i++) {
 
             String host = subnetMask + DOT_SPLITTER + i;
 
-            HostChecker hostChecker = new HostChecker(host);
+            HostChecker hostChecker = new HostChecker(host, countDownLatch);
 
             Thread thread = new Thread(hostChecker);
 
-            thread.run();
+            thread.start();
 
-//            InetAddress currentInetAddress = InetAddress.getByName(host);
-//
-//            if (currentInetAddress.isReachable(TIMEOUT)) {
-//
-//                logger.info(host + IS_REACHABLE_HOST);
-//
-//                String hostName = currentInetAddress.getHostName();
-//
-//
-//                logger.info(hostName);
-//
-//
-//                hostNameList.add(hostName);
-//            }
+        }
+
+        try {
+
+            countDownLatch.await();
+
+        } catch (InterruptedException e) {
+
+            logger.error("Normal running was interrupted!", e);
 
         }
 
