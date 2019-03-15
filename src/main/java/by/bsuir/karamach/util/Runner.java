@@ -1,4 +1,4 @@
-package by.bsuir.karamach;
+package by.bsuir.karamach.util;
 
 import static by.bsuir.karamach.informer.InfoProvider.getCurrentComputerInfo;
 import static by.bsuir.karamach.informer.InfoProvider.getLocalDeviceInfo;

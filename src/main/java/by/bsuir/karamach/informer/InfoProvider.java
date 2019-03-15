@@ -53,10 +53,10 @@ public final class InfoProvider {
     private static StringBuilder getNetworkInfo(List<String> hostNames) throws IOException {
         StringBuilder otherDevicesInfo = new StringBuilder();
         for (String currentName : hostNames) {
-            otherDevicesInfo.append(DEVICES_SPLITTER)
-                    .append("\n")
-                    .append(TOOLTIP)
-                    .append("\n\n")
+            otherDevicesInfo//.append(DEVICES_SPLITTER)
+                    //.append("\n")
+                    //.append(TOOLTIP)
+                    //.append("\n\n")
                     .append(ProcessRunner.executeCommand(ARP_CONSOLE_COMMAND + currentName));
         }
         return otherDevicesInfo;

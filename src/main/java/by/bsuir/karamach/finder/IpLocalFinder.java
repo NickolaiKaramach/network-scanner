@@ -1,6 +1,6 @@
 package by.bsuir.karamach.finder;
 
-import by.bsuir.karamach.HostChecker;
+import by.bsuir.karamach.util.HostChecker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,8 +13,9 @@ public class IpLocalFinder implements IpFinder {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String DOT_SPLITTER = ".";
-    private static final int MAX_IP_RANGE = 255;
+    private static final int MAX_IP_RANGE = 254;
     private static IpLocalFinder instance = new IpLocalFinder();
+    
     private volatile List<String> hostNameList;
 
     private IpLocalFinder() {
