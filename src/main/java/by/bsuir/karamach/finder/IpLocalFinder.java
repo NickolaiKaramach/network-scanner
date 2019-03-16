@@ -12,8 +12,6 @@ public class IpLocalFinder implements IpFinder {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static final String DOT_SPLITTER = ".";
-    private static final int MAX_IP_RANGE = 254;
     private static IpLocalFinder instance = new IpLocalFinder();
     
     private volatile List<String> hostNameList;
@@ -26,26 +24,22 @@ public class IpLocalFinder implements IpFinder {
     }
 
     /**
-     * @param subnetMask 3 byte mask
+     * @param ipAddresses 3 byte mask
      * @return List of all ip-addresses in local network
      */
     @Override
-    public List<String> getAllIps(String subnetMask) {
+    public List<String> getHostNames(List<String> ipAddresses) {
 
-        CountDownLatch countDownLatch = new CountDownLatch(MAX_IP_RANGE);
+        CountDownLatch countDownLatch = new CountDownLatch(ipAddresses.size());
 
         hostNameList = new ArrayList<>();
 
-        for (int i = 1; i <= MAX_IP_RANGE; i++) {
-
-            String host = subnetMask + DOT_SPLITTER + i;
-
-            HostChecker hostChecker = new HostChecker(host, countDownLatch);
+        for (String ipAddress : ipAddresses) {
+            HostChecker hostChecker = new HostChecker(ipAddress, countDownLatch);
 
             Thread thread = new Thread(hostChecker);
 
             thread.start();
-
         }
 
         try {

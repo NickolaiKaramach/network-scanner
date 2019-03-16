@@ -4,5 +4,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IpFinder {
-    List<String> getAllIps(String subnetMask) throws IOException;
+    List<String> getHostNames(List<String> ipAddresses) throws IOException;
 }

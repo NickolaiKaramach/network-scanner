@@ -21,13 +21,16 @@ public final class InfoProvider {
     private InfoProvider() {
     }
 
-    public static StringBuilder getLocalDeviceInfo(String subnet) throws IOException {
+    public static StringBuilder getLocalDeviceInfo(List<String> subnet) throws IOException {
         StringBuilder result = new StringBuilder();
 
-        List<String> hostNames = IpLocalFinder.getInstance().getAllIps(subnet);
+        List<String> hostNames = IpLocalFinder.getInstance().getHostNames(subnet);
 
-        StringBuilder otherDevicesInfo = getNetworkInfo(hostNames);
-        result.append(otherDevicesInfo);
+
+        if (!hostNames.isEmpty()) {
+            StringBuilder otherDevicesInfo = getNetworkInfo(hostNames);
+            result.append(otherDevicesInfo);
+        }
         return result;
     }
 
